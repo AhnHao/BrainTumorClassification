@@ -1,6 +1,7 @@
 import torch
 import torch.optim as optim
 import torch.nn as nn
+import json
 from model import BrainTumorCNN
 from dataset import train_loader, test_loader
 
@@ -10,10 +11,7 @@ model = BrainTumorCNN(4).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
-train_losses = []
-val_losses = []
-train_accuracies = []
-val_accuracies = []
+history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
 
 num_epochs = 20
 best_val_accuracy = 0.0
@@ -39,8 +37,9 @@ for epoch in range(num_epochs):
         correct += (predicted == labels).sum().item()
 
     train_accuracy = correct / total
-    train_losses.append(train_loss)
-    train_accuracies.append(train_accuracy)
+    train_loss /= len(train_loader)
+    history["train_loss"].append(train_loss)
+    history["train_acc"].append(train_accuracy)
 
     # Validation
     model.eval()
@@ -61,8 +60,8 @@ for epoch in range(num_epochs):
 
     val_loss /= len(test_loader)
     val_accuracy = correct / total
-    val_losses.append(val_loss)
-    val_accuracies.append(val_accuracy)
+    history["val_loss"].append(val_loss)
+    history["val_acc"].append(val_accuracy)
 
     print(f'Epoch [{epoch + 1}/{num_epochs}], '
           f'Training Loss: {train_loss:.4f}, Training Accuracy: {train_accuracy:.2%}, '
@@ -72,3 +71,9 @@ for epoch in range(num_epochs):
     if val_accuracy > best_val_accuracy:
         best_val_accuracy = val_accuracy
         torch.save(model.state_dict(), 'model.pth')
+
+# Save results to JSON file
+with open("training_results.json", "w") as f:
+    json.dump(history, f)
+
+print("✅ Đã lưu kết quả huấn luyện vào training_results.json")
