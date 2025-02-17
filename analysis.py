@@ -2,7 +2,6 @@ import os
 import random
 import matplotlib.pyplot as plt
 from PIL import Image
-from holoviews.examples.gallery.apps.bokeh.game_of_life import title
 
 # Đường dẫn đến tập dữ liệu
 train_dir = "dataset/Training"

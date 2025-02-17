@@ -3,7 +3,7 @@ import torch.optim as optim
 import torch.nn as nn
 import json
 from model import BrainTumorCNN
-from dataset import train_loader, test_loader
+from dataset import train_loader, val_loader
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -48,7 +48,7 @@ for epoch in range(num_epochs):
     total = 0
 
     with torch.no_grad():
-        for inputs, labels in test_loader:
+        for inputs, labels in val_loader:
             inputs, labels = inputs.to(device), labels.to(device)
             outputs = model(inputs)
             loss = criterion(outputs, labels)
@@ -58,7 +58,7 @@ for epoch in range(num_epochs):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    val_loss /= len(test_loader)
+    val_loss /= len(val_loader)
     val_accuracy = correct / total
     history["val_loss"].append(val_loss)
     history["val_acc"].append(val_accuracy)
@@ -76,4 +76,4 @@ for epoch in range(num_epochs):
 with open("training_results.json", "w") as f:
     json.dump(history, f)
 
-print("✅ Đã lưu kết quả huấn luyện vào training_results.json")
+print("Đã lưu kết quả huấn luyện vào training_results.json")
