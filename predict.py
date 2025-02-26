@@ -2,8 +2,6 @@ import os
 import torch
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
-import seaborn as sns
 from model import BrainTumorCNN
 from dataset import test_loader
 from sklearn.metrics import classification_report
