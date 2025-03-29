@@ -17,7 +17,7 @@ model.to(device)
 model.eval()  # Đưa model về chế độ đánh giá
 
 # Lấy class labels từ dataset
-class_labels = ["Glioma", "Meningioma", "Pituitary", "No Tumor"]  # Thay đổi theo dataset của bạn
+class_labels = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
 
 # Lấy một batch từ test_loader
 data_iter = iter(test_loader)

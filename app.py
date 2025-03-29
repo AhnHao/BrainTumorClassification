@@ -1,13 +1,13 @@
 # app.py
 import os
 import torch
-import numpy as np
 from flask import Flask, request, render_template, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from PIL import Image
-import matplotlib.pyplot as plt
 from torchvision import transforms
-from model import BrainTumorCNN  # Import your model class
+from model import BrainTumorCNN
+import atexit
+import glob
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
@@ -21,7 +21,7 @@ model.to(device)
 model.eval()
 
 # Define class labels
-class_labels = ["Glioma", "Meningioma", "Pituitary", "No Tumor"]
+class_labels = ["Glioma", "Meningioma" , "No Tumor", "Pituitary"]
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -64,6 +64,14 @@ def upload_file():
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+def cleanup_uploads():
+    files = glob.glob(os.path.join(app.config['UPLOAD_FOLDER'], '*'))
+    for f in files:
+        os.remove(f)
+    print("Uploads folder cleaned up.")
+
+atexit.register(cleanup_uploads)
 
 if __name__ == '__main__':
     app.run(debug=True)
