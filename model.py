@@ -5,7 +5,7 @@ class BrainTumorCNN(nn.Module):
     def __init__(self, num_classes):
         super(BrainTumorCNN, self).__init__()
         self.features = nn.Sequential(
-            nn.Conv2d(3, 16, kernel_size=3, padding=1),
+            nn.Conv2d(1, 16, kernel_size=3, padding=1),
             nn.ReLU(inplace=True),
             nn.MaxPool2d(kernel_size=2, stride=2),
             nn.Conv2d(16, 32, kernel_size=3, padding=1),
@@ -27,4 +27,4 @@ class BrainTumorCNN(nn.Module):
 # Khởi tạo model
 model = BrainTumorCNN(num_classes=4)
 
-summary(model, (3, 224, 224))
+summary(model, (1, 224, 224))

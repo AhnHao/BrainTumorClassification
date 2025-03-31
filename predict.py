@@ -42,8 +42,8 @@ def denormalize(image, mean, std):
 fig, axes = plt.subplots(2, 5, figsize=(12, 6))
 axes = axes.ravel()
 
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
+mean = [0.5]
+std = [0.5]
 
 for i in range(10):
     img = denormalize(images[i].cpu(), mean, std).numpy().transpose((1, 2, 0))  # Chuyển đổi định dạng ảnh

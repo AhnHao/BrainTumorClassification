@@ -13,7 +13,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
 
-num_epochs = 20
+num_epochs = 15
 best_val_accuracy = 0.0
 
 for epoch in range(num_epochs):
